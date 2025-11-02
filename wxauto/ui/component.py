@@ -328,31 +328,33 @@ class WeChatLoginWnd(BaseUISubWnd):
         self.hwnd = FindWindow(classname=self._ui_cls_name)
         if self.hwnd:
             self.control = ControlFromHandle(self.hwnd)
-            self.enter = self.control.ButtonControl(Name=self._lang('进入微信'))
-            if self.enter.Exists(0):
-                self.type = 'enter'
-            else:
-                self.qrcode = self.control.ButtonControl(Name=self._lang('二维码'))
-                if self.qrcode.Exists(0):
-                    self.type = 'qrcode'
             
     def _lang(self, text: str) -> str:
         return WECHAT_LOGINWND.get(text, {WxParam.LANGUAGE: text}).get(WxParam.LANGUAGE)
-    
-    def login_type(self):
-        return self.type
-    
+        
+    def clear_hint(self) -> bool:
+        self._show()
+        hint_dialog = self.control.PaneControl(Name=self._lang('提示'))
+        if hint_dialog.Exists(0):
+            dialog_button = self.control.ButtonControl(Name=self._lang('确定'))
+            dialog_button.Click()
+            return True
+        else:
+            return False
+
     def login(self) -> bool:
         self._show()
-        if self.type == 'enter':
-            self.enter.Click()
+        enter = self.control.ButtonControl(Name=self._lang('进入微信'))
+        if enter.Exists(0):
+            enter.Click()
             return True
         else:
             return False
 
     def get_qrcode(self) -> Image.Image:
         self._show()
-        if self.type == 'qrcode':
+        qrcode = self.control.ButtonControl(Name=self._lang('二维码'))
+        if qrcode.Exists(0):
             window_rect = GetWindowRect(self.hwnd)
             win_left, win_top, win_right, win_bottom = window_rect
             
