@@ -364,12 +364,18 @@ class WeChat(Chat, Listener):
                 break
 
 class WeChatLogin:
+    def ClearHint(self):
+        if loginWnd := WeChatLoginWnd() :
+            return loginWnd.clear_hint()
+        else:
+            return False
+
     def Login(self):
         """登录"""
         if loginWnd := WeChatLoginWnd() :
             return loginWnd.login()
         else:
-            return True
+            return False
 
     def GetQRCode(self) -> Image.Image: 
         """获取二维码"""
