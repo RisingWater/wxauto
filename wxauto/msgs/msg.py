@@ -38,6 +38,7 @@ SEPICIAL_MSGS = [
         '[语音]',     # VoiceMessage
         '[文件]',     # FileMessage
         '[链接]',     # LinkMessage
+        '[音乐]',     # LinkMessage
     ]
 ]
 
@@ -104,6 +105,11 @@ def parse_msg_type(
         # LinkMessage
         elif content == _lang('[链接]') and length in MESSAGE_ATTRS.LINK_MSG_CONTROL_NUM:
             return getattr(msgtype, f'{attr}LinkMessage')(control, parent)
+
+        # MuiscMessage as LinkMessage
+        elif content == _lang('[音乐]') and length in MESSAGE_ATTRS.LINK_MSG_CONTROL_NUM:
+            return getattr(msgtype, f'{attr}LinkMessage')(control, parent)
+
     
     # TextMessage
     if length in MESSAGE_ATTRS.TEXT_MSG_CONTROL_NUM:

@@ -380,14 +380,20 @@ class WeChatBrowser(BaseUISubWnd):
         self._show()
         tab = self.control.TabItemControl()
         if tab.Exists():
+            import time
+            time.sleep(1)
+            
             tab.RightClick()
+            time.sleep(0.3)
             copy_link_item = uia.MenuItemControl(Name=self._lang('复制链接'))
             if copy_link_item.Exists():
                 copy_link_item.Click()
+                time.sleep(0.2)
                 clipboard_data = ReadClipboardData()
                 url = (clipboard_data.get('13') or
                         clipboard_data.get('1') or
                         None)
+                wxlog.debug(f"获取url成功")
                 SetClipboardText('')
                 return url
             else:

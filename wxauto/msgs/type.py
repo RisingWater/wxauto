@@ -146,7 +146,11 @@ class LinkMessage(HumanMessage):
         self.click()
         if webbrower := WeChatBrowser():
             url = webbrower.get_url()
-            webbrower.close()
+            wxlog.debug(f"获取webbrowser url成功")
+            try:
+                webbrower.close()
+            except Exception as e:
+                wxlog.debug(f"关闭webbrowser异常")    
             return url
         else:
             wxlog.debug(f'找不到浏览器窗口')
